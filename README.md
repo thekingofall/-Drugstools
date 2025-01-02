@@ -28,10 +28,14 @@ Whether you're a researcher or a student interested in bioinformatics, this guid
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/DrugSeqTools.git
+git clone https://github.com/thekingofall/Drugstools.git
 cd DrugSeqTools
+pip install .
 ```
-
+or
+```
+pip install drugstools==1.0.0
+```
 ### Step 2: Check and Install Dependencies
 
 Run the following command to check and install required dependencies:
@@ -146,10 +150,14 @@ This project is licensed under the Academic and Commercial Use Separation Licens
 ### 第一步：克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/DrugSeqTools.git
+git clone https://github.com/thekingofall/Drugstools.git
 cd DrugSeqTools
+pip install .
 ```
 
+```
+pip install drugstools==1.0.0
+```
 ### 第二步：检查并安装依赖
 
 运行以下命令检查并安装所需的依赖项：
