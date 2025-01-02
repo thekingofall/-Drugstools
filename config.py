@@ -6,7 +6,7 @@ setup(
     description="A pipeline for processing RNA-seq data with barcode and UMI analysis.",
     author="Your Name",
     author_email="your.email@example.com",
-    url="https://github.com/yourusername/drugstools",  # 替换为您的仓库 URL
+    url="https://github.com/thekingofall/Drugstools.git",  # 
     packages=find_packages(),
     install_requires=[
         # 在此列出您的依赖包，例如：
