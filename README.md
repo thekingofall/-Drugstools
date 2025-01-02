@@ -28,14 +28,9 @@ Whether you're a researcher or a student interested in bioinformatics, this guid
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/thekingofall/Drugstools.git
-cd DrugSeqTools
-pip install .
-```
-or
-```
 pip install drugstools==1.0.0
 ```
+
 ### Step 2: Check and Install Dependencies
 
 Run the following command to check and install required dependencies:
@@ -147,17 +142,14 @@ This project is licensed under the Academic and Commercial Use Separation Licens
 
 ## 安装
 
-### 第一步：克隆仓库
+### 第一步：安装软件
+
+
 
 ```bash
-git clone https://github.com/thekingofall/Drugstools.git
-cd DrugSeqTools
-pip install .
+ pip install drugstools==1.0.0
 ```
 
-```
-pip install drugstools==1.0.0
-```
 ### 第二步：检查并安装依赖
 
 运行以下命令检查并安装所需的依赖项：
@@ -175,6 +167,7 @@ drugstools --check-installation
 ```bash
 conda activate Drugseqtoolsenv
 ```
+
 
 ## 使用方法
 
@@ -198,7 +191,7 @@ drugstools -f <readFolder> -b <barcodeFile> -o <outputDir> -g <gtfFile> -d <geno
 - `--check-installation`：检查并尝试自动安装所需的外部依赖项。
 - `--step=<step>`：选择要运行的流水线步骤（`all`、`transform` 或 `count`）。默认值为 `all`。
 
-### 示例用法
+### 基础用法
 
 ```bash
 drugstools -f ./data -b ./barcodes.txt -o ./output -g ./genes.gtf -d ./genomeIndex
@@ -206,19 +199,84 @@ drugstools -f ./data -b ./barcodes.txt -o ./output -g ./genes.gtf -d ./genomeInd
 
 该命令使用位于`./data`的测序数据，使用`./barcodes.txt`中的条形码，将结果输出到`./output`，并使用指定的基因注释和基因组索引运行整个流水线。
 
-## 流程概述
+### 示例用法
 
-1. **数据转换**：
-   - 处理FASTQ文件中的读段，将条形码和UMI正确关联。
-   - 生成转换后的FASTQ文件，供计数步骤使用。
+### 构建STAR索引（必须先自己去做）
+在使用DrugSeqTools之前，需要先构建STAR索引。参考以下命令：
 
-2. **UMI计数**：
-   - 使用STAR等比对工具将转换后的读段比对到基因组上。
-   - 统计UMI数量，生成准确的基因表达水平。
+```bash
+GENOMEDIR="/home/xxx/genome/"
+mkdir -p $GENOMEDIR/STAR
+STAR --runThreadN 23 --runMode genomeGenerate \
+     --genomeDir $GENOMEDIR/STAR \
+     --genomeFastaFiles $GENOMEDIR/GRCh38.primary_assembly.genome.fa \
+     --sjdbGTFfile $GENOMEDIR/gencode.v29.primary_assembly.annotation.gtf
+```
 
-3. **生成输出**：
+
+### 基本命令结构
+
+```bash
+drugstools -f <readFolder> -b <barcodeFile> -o <outputDir> -g <gtfFile> -d <genomeDir> [options]
+```
+
+### 示例运行
+
+以下是一个实际运行示例：
+> BC.txt的内容，必须是GTA这样开头
+```
+GTACAACGTGAT
+GTACAAACATCG
+GTACATGCCTAA
+GTACAGTGGTCA
+GTACACCACTGT
+GTACACATTGGC
+GTACCAGATCTG
+GTACCATCAAGT
+GTACCGCTGATC
+GTACACAAGCTA
+GTACCTGTAGCC
+GTACAGTACAAG
+GTACAACAACCA
+GTACAACCGAGA
+GTACAACGCTTA
+GTACAAGACGGA
+GTACAAGGTACA
+GTACACACAGAA
+GTACACAGCAGA
+GTACACCTCCAA
+GTACACGCTCGA
+GTACACGTATCA
+GTACACTATGCA
+GTACAGAGTCAA
+```
+
+```bash
+(Drugseqtoolsenv) [maolp@localhost drug_seq_data]$ drugstools -f data -b BC.txt \
+-g /home/maolp/mao/Ref/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf \
+-d /home/maolp/mao/Ref/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/star_hg38 \
+-o testdrugtools2
+
+[Info] Detected R1 file: data/LJQ-2_L3_801_1.fastq.gz
+[Info] Detected R2 file: data/LJQ-2_L3_801_2.fastq.gz
+[Info] Running transform step...
+Processing reads: 77378861 read [15:00, 90986.15 read/s]22965488
+Processing reads: 77386379 read [15:00, 85929.56 read/s]
+-----------------Transform done-----------------
+-----------------Barcode-UMI-Count analysis start-------------
+testdrugtools2/LJQ-2_Aligned.sortedByCoord.out.bam
+-----------------remove temp files with auto-clean-----------------
+if you want to keep temp files, please use --keep_temp_files parameter,which will keep the temp files
+-----------------Pipeline finished successfully!-----------------
+```
+
+
+
+## 生成输出：
    - 生成适合下游分析的计数表（`counts.tsv.gz`）。
    - 提供总结文件（`gene_assigned.summary`）。
+
+
 
 ## 清理
 
