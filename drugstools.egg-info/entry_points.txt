@@ -1,0 +1,2 @@
+[console_scripts]
+drugstools = drugstools.main:main

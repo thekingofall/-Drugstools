@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: drugstools
+Version: 1.0.0
+Summary: A pipeline for processing RNA-seq data with barcode and UMI analysis.
+Home-page: https://github.com/yourusername/drugstools
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+License-File: LICENSE.md
+Requires-Dist: tqdm
